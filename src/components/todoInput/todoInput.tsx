@@ -64,12 +64,22 @@ const TodoInput: React.FC<Props> = ({ onTodoSubmit, formStatus, onInputToggle })
     onInputToggle();
   };
 
+  /**
+   * Handle onSubmit Event emitted from <form />
+   * @param e - Form Event
+   */
+  const handleOnSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    onSubmit();
+  };
+
   // Today's Date for the date validation
   const today: string = new Date().toISOString().split('T')[0];
 
   return (
     <Styled.InputContainer>
-      <Styled.Form onSubmit={onSubmit} open={formStatus}>
+      <Styled.Form onSubmit={handleOnSubmit} open={formStatus}>
         <Styled.InputTask value={taskTitle} onChange={onChange} ref={inputRef} autoFocus />
         <Styled.DateContainer>
           <Styled.DateHelper> Should be done by: (Optional)</Styled.DateHelper>
