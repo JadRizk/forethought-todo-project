@@ -2,48 +2,83 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
 
-import { AppHeader, TodoList, TodoInput } from "components";
+import { AppHeader, TodoList } from "components";
 import { ITodoItem } from "utils/interfaces";
 
-const tempItem: ITodoItem[] = [
-  {
-    key: "blablabla",
-    title: "Hello World!",
-    expectedDate: "asdf",
-    isActive: false,
-  },
-  {
-    key: "blablabla",
-    title: "Hello World 2!",
-    expectedDate: "asdf",
-    isActive: false,
-  },
-];
-
 const App = () => {
+  // States
   const [todoList, setTodoList] = useState<ITodoItem[]>([]);
+  const [isFormVisible, setIsFormVisible] = useState(false);
 
-  const onTodoToggle = (item: ITodoItem) => {};
+  /**
+   * Handle the Todo checkbox action
+   *
+   * @param item - Toggled item
+   */
+  const onTodoToggle = (item: ITodoItem) => {
+    const updateList = todoList.map((todo: ITodoItem) => {
+      const { key, isCompleted } = todo;
+      return key === item.key ? { ...todo, isCompleted: !isCompleted } : todo;
+    });
 
-  // Adding a Todo
-  // const onSubmit = (value: string, date: string) => {
-  //   setTodoList((prevTodo) => [
-  //     ...prevTodo,
-  //     {
-  //       key: uuidv4(),
-  //       title: value,
-  //       expectedDate: date,
-  //       isActive: false,
-  //     },
-  //   ]);
-  // };
+    setTodoList(updateList);
+  };
+
+  /**
+   * Toggle/Untoggle the form view (TodoInput.tsx)
+   */
+  const onFormToggle = () => {
+    setIsFormVisible(!isFormVisible);
+  };
+
+  /**
+   * Handle the addition of new todos to the list
+   *
+   * @param taskTitle - Todo title
+   * @param date - ?Expected Date
+   */
+  const onSubmit = (taskTitle: string, date: string) => {
+    setTodoList((prevTodo) => [
+      ...prevTodo,
+      {
+        key: uuidv4(),
+        title: taskTitle,
+        expectedDate: date,
+        isCompleted: false,
+      },
+    ]);
+
+    onFormToggle();
+  };
+
+  /**
+   * Handle todo removal
+   *
+   * @param item - Item to remove
+   */
+  const onRemoveTodo = (item: ITodoItem) => {
+    const updatedList = todoList.filter(
+      (todo: ITodoItem) => todo.key !== item.key
+    );
+
+    setTodoList(updatedList);
+  };
 
   return (
     <AppContainer>
       <RootContainer>
-        <AppHeader />
-        <TodoInput onTodoSubmit={() => console.log("Here")} />
-        <TodoList onToggleTodo={onTodoToggle} todoList={tempItem} />
+        <AppHeader
+          formStatus={isFormVisible}
+          totalTaskNumber={todoList.length}
+          onInputToggle={onFormToggle}
+          onSubmit={onSubmit}
+        />
+        <TodoList
+          todoList={todoList}
+          formStatus={isFormVisible}
+          onToggleTodo={onTodoToggle}
+          onRemoveTodo={onRemoveTodo}
+        />
       </RootContainer>
     </AppContainer>
   );
@@ -70,4 +105,6 @@ const RootContainer = styled.div`
   align-item: center;
   justify-content: center;
   background: #fff;
+  min-height: 85vh;
+  border-radius: 0.5rem;
 `;

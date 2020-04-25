@@ -2,6 +2,6 @@
 export interface ITodoItem {
     key: string;
     title: string;
-    isActive: boolean;
+    isCompleted: boolean;
     expectedDate: string;
 }
