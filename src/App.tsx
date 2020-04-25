@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import { v4 as uuidv4 } from "uuid";
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import { v4 as uuidv4 } from 'uuid';
 
-import { AppHeader, TodoList } from "components";
-import { ITodoItem } from "utils/interfaces";
+import { AppHeader, TodoList } from 'components';
+import { ITodoItem } from 'utils/interfaces';
 
 const App = () => {
   // States
@@ -57,9 +57,7 @@ const App = () => {
    * @param item - Item to remove
    */
   const onRemoveTodo = (item: ITodoItem) => {
-    const updatedList = todoList.filter(
-      (todo: ITodoItem) => todo.key !== item.key
-    );
+    const updatedList = todoList.filter((todo: ITodoItem) => todo.key !== item.key);
 
     setTodoList(updatedList);
   };
@@ -92,11 +90,7 @@ const AppContainer = styled.div`
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background: linear-gradient(
-    28deg,
-    rgba(244, 116, 117, 1) 50%,
-    rgba(89, 93, 229, 1) 50%
-  );
+  background: linear-gradient(28deg, rgba(244, 116, 117, 1) 50%, rgba(89, 93, 229, 1) 50%);
 `;
 
 const RootContainer = styled.div`
